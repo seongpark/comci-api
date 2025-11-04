@@ -140,7 +140,6 @@ function convertToJSON($rawData, $grade, $class) {
     return $timetable;
 }
 
-// JSON 생성 및 출력
 $result = convertToJSON($rawData, $grade, $class);
 echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 ?>
