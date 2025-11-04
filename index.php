@@ -1,12 +1,10 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *'); // CORS 허용
+header('Access-Control-Allow-Origin: *'); 
 
-// GET 파라미터 받기
 $grade = isset($_GET['grade']) ? intval($_GET['grade']) : 0;
 $class = isset($_GET['class']) ? intval($_GET['class']) : 0;
 
-// 유효성 검사
 if ($grade < 1 || $grade > 3) {
     echo json_encode([
         'error' => true,
@@ -25,7 +23,6 @@ if ($class < 1 || $class > 20) {
     exit;
 }
 
-// 컴시간 API에서 데이터 가져오기
 function fetchTimetableData() {
     $apiUrl = '';
     
@@ -42,7 +39,6 @@ function fetchTimetableData() {
         return null;
     }
     
-    // JSON 파싱
     $lastBrace = strrpos($response, '}');
     if ($lastBrace === false) {
         return null;
@@ -52,7 +48,6 @@ function fetchTimetableData() {
     return json_decode($jsonData, true);
 }
 
-// 데이터 로드
 $rawData = fetchTimetableData();
 
 if (!$rawData) {
@@ -64,7 +59,6 @@ if (!$rawData) {
     exit;
 }
 
-// 시간표 데이터 추출 함수
 function Q자료($m) {
     return isset($m) ? $m : 0;
 }
@@ -79,14 +73,13 @@ function mSb($mm, $m2) {
     return floor($mm / $m2);
 }
 
-// 시간표를 JSON으로 변환
 function convertToJSON($rawData, $grade, $class) {
     $분리 = isset($rawData['분리']) ? $rawData['분리'] : 100;
     $요일명 = ['월요일', '화요일', '수요일', '목요일', '금요일'];
     
     $timetable = [
         'success' => true,
-        'school' => '학교명', // 원하는 경우 rawData에서 추출 가능
+        'school' => '학교명', 
         'grade' => $grade,
         'class' => $class,
         'lastModified' => isset($rawData['자료244']) ? $rawData['자료244'] : null,
@@ -118,17 +111,14 @@ function convertToJSON($rawData, $grade, $class) {
                 $th = mTh($일일자료, $분리);
                 $sb = mSb($일일자료, $분리) % $분리;
                 
-                // 과목명
                 if (isset($rawData['자료492'][$sb])) {
                     $periodData['subject'] = $rawData['자료492'][$sb];
                 }
                 
-                // 교사명
                 if (isset($rawData['자료446'][$th])) {
                     $periodData['teacher'] = $rawData['자료446'][$th];
                 }
                 
-                // 강의실 정보
                 if (isset($rawData['강의실']) && $rawData['강의실'] == 1) {
                     $m3 = $rawData['자료245'][$grade][$class][$day][$period] ?? null;
                     if ($m3 && strpos($m3, '_') !== false) {
