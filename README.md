@@ -23,7 +23,7 @@ http://comci.net:4082/36179?NzM2MjlfNTM3MDZfMF8x
 CORS 오류를 우회하기 위해 PHP 프록시를 만들어야 합니다.
 
 1. proxy.php 파일을 다운로드하여, ```$url```에 API 엔드포인트 URL을 삽입합니다.
-```
+```php
 $url = "http://comci.net:4082/36179?NzM2MjlfNTM3MDZfMF8x";
 ```
 2. index.php 파일을 다운로드하고, ```$apiUrl```에 proxy.php 파일을 링크합니다.
